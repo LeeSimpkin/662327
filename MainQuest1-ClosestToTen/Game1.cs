@@ -14,6 +14,7 @@ namespace MainQuest1_ClosestToTen
         private Texture2D bluePixelTexture, redPixelTexture;
         private Texture2D simonTexture;
         private float timeRemaining = 10f;
+        private SpriteFont font;
 
         public Game1()
         {
@@ -32,6 +33,7 @@ namespace MainQuest1_ClosestToTen
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            font = Content.Load<SpriteFont>("Timer");
 
             int rectangleWidth = 200;
             int rectangleHeight = 100;
@@ -56,7 +58,12 @@ namespace MainQuest1_ClosestToTen
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            float secondsPassed = gameTime.ElapsedGameTime.Milliseconds / 1000f;
+            timeRemaining -= secondsPassed;
+            if (timeRemaining <= 0)
+            {
+                timeRemaining = 0;
+            }
 
             base.Update(gameTime);
         }
@@ -67,13 +74,19 @@ namespace MainQuest1_ClosestToTen
 
 
             _spriteBatch.Begin();
-
-            _spriteBatch.Draw(simonTexture, blueRectangle, Color.Blue);
-            _spriteBatch.Draw(simonTexture, redRectangle, Color.Red);
-
+            if (timeRemaining > 0)
+            {
+                _spriteBatch.DrawString(font, timeRemaining.ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.Black);
+                _spriteBatch.Draw(simonTexture, blueRectangle, Color.Blue);
+                _spriteBatch.Draw(simonTexture, redRectangle, Color.Red);
+            }
+            if (timeRemaining == 0)
+            {
+                GraphicsDevice.Clear(Color.Red);
+                _spriteBatch.Draw(simonTexture, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Red);
+                _spriteBatch.DrawString(font, "HELP ME", new Vector2(GraphicsDevice.Viewport.Width / 2 - 50, GraphicsDevice.Viewport.Height / 2 + 50), Color.Black);
+            }
             _spriteBatch.End();
-                
-
             base.Draw(gameTime);
         }
     }
