@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Linq.Expressions;
+using System.Net.Mime;
 
 namespace MainQuest1_ClosestToTen
 {
@@ -11,6 +12,7 @@ namespace MainQuest1_ClosestToTen
         private SpriteBatch _spriteBatch;
         private Rectangle blueRectangle, redRectangle;
         private Texture2D bluePixelTexture, redPixelTexture;
+        private Texture2D simonTexture;
 
         public Game1()
         {
@@ -22,6 +24,7 @@ namespace MainQuest1_ClosestToTen
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
 
             base.Initialize();
         }
@@ -45,7 +48,7 @@ namespace MainQuest1_ClosestToTen
             bluePixelTexture.SetData(new Color[] { Color.Blue });
             redPixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             redPixelTexture.SetData(new Color[] { Color.Red });
-
+            simonTexture = Content.Load<Texture2D>("simon");
 
 
             // TODO: use this.Content to load your game content here
@@ -68,8 +71,8 @@ namespace MainQuest1_ClosestToTen
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(bluePixelTexture, blueRectangle, Color.Blue);
-            _spriteBatch.Draw(redPixelTexture, redRectangle, Color.Red);
+            _spriteBatch.Draw(simonTexture, blueRectangle, Color.Blue);
+            _spriteBatch.Draw(simonTexture, redRectangle, Color.Red);
 
             _spriteBatch.End();
                 
