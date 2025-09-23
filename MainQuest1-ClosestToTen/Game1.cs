@@ -13,6 +13,7 @@ namespace MainQuest1_ClosestToTen
         private Rectangle blueRectangle, redRectangle;
         private Texture2D bluePixelTexture, redPixelTexture;
         private Texture2D simonTexture;
+        private float timeRemaining = 10f;
 
         public Game1()
         {
@@ -23,7 +24,6 @@ namespace MainQuest1_ClosestToTen
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
 
             base.Initialize();
@@ -50,8 +50,6 @@ namespace MainQuest1_ClosestToTen
             redPixelTexture.SetData(new Color[] { Color.Red });
             simonTexture = Content.Load<Texture2D>("simon");
 
-
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -59,7 +57,6 @@ namespace MainQuest1_ClosestToTen
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
@@ -76,7 +73,6 @@ namespace MainQuest1_ClosestToTen
 
             _spriteBatch.End();
                 
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }
