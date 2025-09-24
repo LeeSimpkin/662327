@@ -11,13 +11,14 @@ namespace MainQuest1_ClosestToTen
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Rectangle rectangle;
+        private Rectangle rectangle, button;
         private Texture2D simonSplashScreen, rectangleTexture;
         private float timeRemaining = 2f;
         private SpriteFont font, simonFont;
         Vector2 timerPosition;
         enum Screen { flashScreen, titleScreen, creditsScreen, gameScreen, pauseScreen, gameOverScreen };
         private Screen screen;
+        
 
         public Game1()
         {
@@ -39,11 +40,12 @@ namespace MainQuest1_ClosestToTen
             simonFont = Content.Load<SpriteFont>("SIMONFONT");
             simonSplashScreen = Content.Load<Texture2D>("simon");
             rectangleTexture = Content.Load<Texture2D>("Rectangle");
+            Vector2 buttonSize = new Vector2(150, 100);
 
             int simonSplashScreenWidth = 300;
             int simonSplashScreenHeight = 300;
             rectangle = new Rectangle(GraphicsDevice.Viewport.Width / 2 - simonSplashScreenWidth / 2, GraphicsDevice.Viewport.Height / 2 - simonSplashScreenHeight / 2, simonSplashScreenWidth, simonSplashScreenHeight);
-
+            button = new Rectangle((int)(GraphicsDevice.Viewport.Width / 2 - (buttonSize.X / 2)), (int)(GraphicsDevice.Viewport.Height / 2 - (buttonSize.Y / 2)), (int)buttonSize.X, (int)buttonSize.Y);
         }
 
         protected override void Update(GameTime gameTime)
@@ -93,32 +95,23 @@ namespace MainQuest1_ClosestToTen
                     {
                         screen = Screen.pauseScreen;
                     }
+                    else if (button.Contains(Mouse.GetState().Position) && Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    {
+                        screen = Screen.gameOverScreen;
+                    }
                     break;
                 case Screen.pauseScreen:
                     DrawPauseScreen();
+                    if(Keyboard.GetState().IsKeyDown(Keys.P))
+                    {
+                        screen = Screen.gameScreen;
+                    }
                     break;
                 case Screen.gameOverScreen:
                     DrawGameOverScreen();
                     break;
             }
-            //if (timeRemaining > 0)
-            //{
-
-            //    _spriteBatch.DrawString(font, timeRemaining.ToString("0.0"), timerPosition + new Vector2(2, 2), new Color(242f / 255, 70f / 255, 80f / 255, 1f));
-            //    _spriteBatch.DrawString(font, timeRemaining.ToString("0.0"), timerPosition, new Color(252f / 255, 234f / 255, 51f / 255, 1f));
-            //    _spriteBatch.Draw(simonTexture, blueRectangle, Color.Blue);
-            //    _spriteBatch.Draw(simonTexture, redRectangle, Color.Red);
-            //}
-            //if (timeRemaining == 0)
-            //{
-            //    GraphicsDevice.Clear(Color.Red);
-            //    _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            //    _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            //    _graphics.ApplyChanges();
-
-            //    _spriteBatch.Draw(simonTexture, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Red);
-            //    _spriteBatch.DrawString(simonFont, "HELP ME", new Vector2(GraphicsDevice.Viewport.Width / 2 - 50, GraphicsDevice.Viewport.Height / 2 + 50), Color.Black);
-            //}
+            
             base.Draw(gameTime);
         }
 
@@ -154,7 +147,7 @@ namespace MainQuest1_ClosestToTen
         private void DrawGameScreen()
         {
             _spriteBatch.Begin();
-            _spriteBatch.Draw(rectangleTexture, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 150, GraphicsDevice.Viewport.Height / 2 - 150, 300, 300), Color.Red);
+            _spriteBatch.Draw(rectangleTexture, new Rectangle(button.X, button.Y, button.Width, button.Height),Color.Red);
             _spriteBatch.End();
         }
         private void DrawPauseScreen()
