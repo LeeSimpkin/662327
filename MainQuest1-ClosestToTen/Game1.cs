@@ -15,22 +15,18 @@ namespace MainQuest1_ClosestToTen
         private Texture2D simonTexture;
         private float timeRemaining = 10f;
         private SpriteFont font, simonFont;
-        
+        Vector2 timerPosition;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             
-
-
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-
-
             base.Initialize();
         }
 
@@ -69,19 +65,20 @@ namespace MainQuest1_ClosestToTen
             {
                 timeRemaining = 0;
             }
-
+            timerPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width - font.MeasureString(timeRemaining.ToString("0.0")).X - 10, 10);
             base.Update(gameTime);
         }
-
+     
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-
             _spriteBatch.Begin();
+
             if (timeRemaining > 0)
             {
-                _spriteBatch.DrawString(font, timeRemaining.ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.Black);
+
+                _spriteBatch.DrawString(font, timeRemaining.ToString("0.0"), timerPosition + new Vector2(2, 2), new Color(242f / 255, 70f / 255, 80f / 255, 1f));
+                _spriteBatch.DrawString(font, timeRemaining.ToString("0.0"), timerPosition, new Color(252f / 255, 234f / 255, 51f / 255, 1f));
                 _spriteBatch.Draw(simonTexture, blueRectangle, Color.Blue);
                 _spriteBatch.Draw(simonTexture, redRectangle, Color.Red);
             }
@@ -92,12 +89,12 @@ namespace MainQuest1_ClosestToTen
                 _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 _graphics.ApplyChanges();
 
-                
                 _spriteBatch.Draw(simonTexture, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Red);
                 _spriteBatch.DrawString(simonFont, "HELP ME", new Vector2(GraphicsDevice.Viewport.Width / 2 - 50, GraphicsDevice.Viewport.Height / 2 + 50), Color.Black);
-        }
-        _spriteBatch.End();
+            }
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
+        
     }
 }
