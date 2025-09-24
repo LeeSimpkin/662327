@@ -14,11 +14,15 @@ namespace MainQuest1_ClosestToTen
         private Texture2D bluePixelTexture, redPixelTexture;
         private Texture2D simonTexture;
         private float timeRemaining = 10f;
-        private SpriteFont font;
+        private SpriteFont font, simonFont;
+        
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            
+
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -34,6 +38,7 @@ namespace MainQuest1_ClosestToTen
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("Timer");
+            simonFont = Content.Load<SpriteFont>("SIMONFONT");
 
             int rectangleWidth = 200;
             int rectangleHeight = 100;
@@ -83,10 +88,15 @@ namespace MainQuest1_ClosestToTen
             if (timeRemaining == 0)
             {
                 GraphicsDevice.Clear(Color.Red);
+                _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                _graphics.ApplyChanges();
+
+                
                 _spriteBatch.Draw(simonTexture, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Red);
-                _spriteBatch.DrawString(font, "HELP ME", new Vector2(GraphicsDevice.Viewport.Width / 2 - 50, GraphicsDevice.Viewport.Height / 2 + 50), Color.Black);
-            }
-            _spriteBatch.End();
+                _spriteBatch.DrawString(simonFont, "HELP ME", new Vector2(GraphicsDevice.Viewport.Width / 2 - 50, GraphicsDevice.Viewport.Height / 2 + 50), Color.Black);
+        }
+        _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
