@@ -12,7 +12,7 @@ namespace MainQuest1_ClosestToTen
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Rectangle rectangle;
-        private Texture2D simonSplashScreen;
+        private Texture2D simonSplashScreen, rectangleTexture;
         private float timeRemaining = 2f;
         private SpriteFont font, simonFont;
         Vector2 timerPosition;
@@ -38,6 +38,7 @@ namespace MainQuest1_ClosestToTen
             font = Content.Load<SpriteFont>("Timer");
             simonFont = Content.Load<SpriteFont>("SIMONFONT");
             simonSplashScreen = Content.Load<Texture2D>("simon");
+            rectangleTexture = Content.Load<Texture2D>("Rectangle");
 
             int simonSplashScreenWidth = 300;
             int simonSplashScreenHeight = 300;
@@ -153,7 +154,7 @@ namespace MainQuest1_ClosestToTen
         private void DrawGameScreen()
         {
             _spriteBatch.Begin();
-            
+            _spriteBatch.Draw(rectangleTexture, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 150, GraphicsDevice.Viewport.Height / 2 - 150, 300, 300), Color.Red);
             _spriteBatch.End();
         }
         private void DrawPauseScreen()
