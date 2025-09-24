@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Linq.Expressions;
 using System.Net.Mime;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace MainQuest1_ClosestToTen
 {
@@ -13,7 +14,7 @@ namespace MainQuest1_ClosestToTen
         private SpriteBatch _spriteBatch;
         private Rectangle rectangle, button;
         private Texture2D simonSplashScreen, rectangleTexture;
-        private float timeRemaining = 2f;
+        private float timeRemaining = 2f, score;
         private SpriteFont font, simonFont;
         Vector2 timerPosition;
         enum Screen { flashScreen, titleScreen, creditsScreen, gameScreen, pauseScreen, gameOverScreen };
@@ -59,6 +60,11 @@ namespace MainQuest1_ClosestToTen
                 timeRemaining = 0;
             }
             timerPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width - font.MeasureString(timeRemaining.ToString("0.0")).X - 10, 10);
+            if(screen == Screen.gameScreen)
+            {
+                timeRemaining = 0;
+                timeRemaining = gameTime.ElapsedGameTime.Milliseconds / 1000;
+            }
             base.Update(gameTime);
         }
 
@@ -91,12 +97,15 @@ namespace MainQuest1_ClosestToTen
                     break;
                 case Screen.gameScreen:
                     DrawGameScreen();
+
                     if (Keyboard.GetState().IsKeyDown(Keys.P))
                     {
                         screen = Screen.pauseScreen;
                     }
                     else if (button.Contains(Mouse.GetState().Position) && Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
+                        score = 100 * timeRemaining;
+                        if (score > 1000) score = 0;
                         screen = Screen.gameOverScreen;
                     }
                     break;
@@ -160,6 +169,8 @@ namespace MainQuest1_ClosestToTen
         private void DrawGameOverScreen()
         {
             _spriteBatch.Begin();
+            _spriteBatch.DrawString(font, "Score: " + score, new Vector2(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 + 50), new Color(252f / 255, 234f / 255, 51f / 255, 1f));
+            _spriteBatch.DrawString(font, "Score: " + score, new Vector2(GraphicsDevice.Viewport.Width / 2 - 102, GraphicsDevice.Viewport.Height / 2 + 50), new Color(242f / 255, 70f / 255, 80f / 255, 1f));
             _spriteBatch.DrawString(font, "Game over", new Vector2(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2), new Color(252f / 255, 234f / 255, 51f / 255, 1f));
             _spriteBatch.DrawString(font, "Game over", new Vector2(GraphicsDevice.Viewport.Width / 2 - 102, GraphicsDevice.Viewport.Height / 2), new Color(242f / 255, 70f / 255, 80f / 255, 1f));
             _spriteBatch.End();
