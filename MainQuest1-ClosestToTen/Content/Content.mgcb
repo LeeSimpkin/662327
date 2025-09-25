@@ -13,6 +13,11 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin HighScore.txt
+/importer:
+/processor:
+/build:HighScore.txt
+
 #begin Rectangle.png
 /importer:TextureImporter
 /processor:TextureProcessor
