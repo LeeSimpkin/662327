@@ -14,9 +14,11 @@ namespace MainQuest1_ClosestToTen
         private SpriteBatch _spriteBatch;
         private Rectangle rectangle, button;
         private Texture2D simonSplashScreen, rectangleTexture;
-        private float timeRemaining = 2f, score;
+        private float timeRemaining = 2f, timer;
+        private int score;
         private SpriteFont font, simonFont;
         Vector2 timerPosition;
+        private bool isPressed;
         enum Screen { flashScreen, titleScreen, creditsScreen, gameScreen, pauseScreen, gameOverScreen };
         private Screen screen;
         
@@ -62,8 +64,7 @@ namespace MainQuest1_ClosestToTen
             timerPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width - font.MeasureString(timeRemaining.ToString("0.0")).X - 10, 10);
             if(screen == Screen.gameScreen)
             {
-                timeRemaining = 0;
-                timeRemaining = gameTime.ElapsedGameTime.Milliseconds / 1000;
+                timer += gameTime.ElapsedGameTime.Milliseconds;
             }
             base.Update(gameTime);
         }
@@ -97,23 +98,43 @@ namespace MainQuest1_ClosestToTen
                     break;
                 case Screen.gameScreen:
                     DrawGameScreen();
-
+                    if(isPressed) 
+                    {
+                        if (Keyboard.GetState().IsKeyUp(Keys.P))
+                        {
+                            isPressed = false;
+                        }
+                        break;
+                    }
+                    else
                     if (Keyboard.GetState().IsKeyDown(Keys.P))
                     {
                         screen = Screen.pauseScreen;
+                        isPressed = true;
                     }
                     else if (button.Contains(Mouse.GetState().Position) && Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
-                        score = 100 * timeRemaining;
+                        score = (int)(100 * (timer/1000));
                         if (score > 1000) score = 0;
                         screen = Screen.gameOverScreen;
                     }
                     break;
                 case Screen.pauseScreen:
                     DrawPauseScreen();
-                    if(Keyboard.GetState().IsKeyDown(Keys.P))
+
+                    if(isPressed) 
+                                            {
+                        if (Keyboard.GetState().IsKeyUp(Keys.P))
+                        {
+                            isPressed = false;
+                        }
+                        break;
+                    }
+                    else
+                    if (Keyboard.GetState().IsKeyDown(Keys.P))
                     {
                         screen = Screen.gameScreen;
+                        isPressed = true;
                     }
                     break;
                 case Screen.gameOverScreen:
